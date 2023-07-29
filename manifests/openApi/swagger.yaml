@@ -1,0 +1,120 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Livedata API"
+paths:
+
+  /v1/individuals/{id}:
+    get:
+      operationId: "IndividualsGetV1"
+      summary: "Get an individual by ID"
+      description: "Returns the individual object"
+      parameters:
+        - in: path
+          name: id
+          description: Id of the individual
+          required: true
+          type: integer
+
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Individual'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+    patch:
+      operationId: "IndividualsPatchV1"
+      summary: "Update an individual by ID"
+      description: "Updates the individual object with the provided data"
+      parameters:
+        - in: path
+          name: id
+          description: Id of the individual
+          required: true
+          type: integer
+        - in: body
+          name: patch
+          description: The patch to be applied
+          required: true
+          schema:
+            $ref: '#/definitions/Patch'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Individual'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+
+  /v1/individuals:
+    get:
+      operationId: "IndividualsGetAllV1"
+      summary: "Get all individuals"
+      description: "Returns all the individual objects"
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Individual'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+
+    post:
+      operationId: "IndividualsCreateNewV1"
+      summary: "Create a new individual"
+      description: "Creates a new individual in the database"
+      parameters:
+        - in: body
+          name: individual
+          schema:
+            $ref: '#/definitions/Individual'
+      responses:
+        '201':
+          description: 'Individual successfully created'
+          schema:
+            $ref: '#/definitions/Individual'
+
+definitions:
+  Individual:
+    type: object
+    properties:
+      id:
+        type: integer
+      birth_date:
+        type: string
+        format: date
+      status:
+        type: string
+      gender:
+        type: string
+      mother:
+        type: integer
+      father:
+        type: integer
+
+  Patch:
+    type: array
+    items:
+      type: object
+      properties:
+        op:
+          type: string
+        path:
+          type: string
+        value:
+          type: string

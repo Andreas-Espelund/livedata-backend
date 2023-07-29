@@ -1,7 +1,7 @@
 .PHONY: server
 server:
-	go run ./cmd/myproject-server/main.go --port=8080
+	go run ./generated/cmd/livedata-backend-server/main.go --port=8080
 
 .PHONY: generate
 generate:
-	swagger generate server -A livedata-backend -f ./swagger.yaml
+	swagger generate server -A livedata-backend -f ./manifests/openApi/swagger.yaml -t ./generated && go mod tidy
