@@ -1,6 +1,6 @@
 module github.com/Andreas-Espelund/livedata-backend
 
-go 1.20
+go 1.19
 
 require (
 	github.com/go-openapi/errors v0.20.4
