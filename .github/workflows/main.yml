@@ -35,6 +35,10 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Create Azure Container Instance
+      - name: Create or Update Azure Container Instance
         run: |
-          az container create --name livedata-backend-server --image ${{ secrets.DOCKER_HUB_USERNAME }}/livedata-backend-server --resource-group livedata --cpu 1 --memory 1 --registry-login-server docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PASSWORD }} --dns-name-label livedata-backend-server --ports 8080
+          az container create --name livedata-backend-server --image ${{ secrets.DOCKER_HUB_USERNAME }}/livedata-backend-server --resource-group livedata --cpu 1 --memory 1.5 --registry-login-server docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PASSWORD }} --dns-name-label livedata-backend-server --ports 8080 --no-wait || true
+
+      - name: Restart Azure Container Instance
+        run: |
+          az container restart --name livedata-backend-server --resource-group livedata
