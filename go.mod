@@ -1,6 +1,6 @@
 module github.com/Andreas-Espelund/livedata-backend
 
-go 1.19
+go 1.20
 
 require (
 	github.com/go-openapi/errors v0.20.4
@@ -12,8 +12,7 @@ require (
 	github.com/go-openapi/validate v0.22.1
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/mitchellh/mapstructure v1.5.0
-	golang.org/x/net v0.0.0-20211123202848-9e5a29745d54
-
+	golang.org/x/net v0.12.0
 )
 
 require (
