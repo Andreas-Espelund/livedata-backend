@@ -38,13 +38,16 @@ func configureAPI(api *operations.LivedataBackendAPI) http.Handler {
 
 	// v1 handlers
 
-	api.IndividualsGetV1Handler = v1.IndividualsGet()
+	// PATH: /individuals
 	api.IndividualsGetAllV1Handler = v1.IndividualsGetAll()
 	api.IndividualsCreateNewV1Handler = v1.IndividualsCreateNew()
+
+	// PATH: /individuals/{id}
 	api.IndividualsPatchV1Handler = v1.IndividualsPatch()
+	api.IndividualsGetV1Handler = v1.IndividualsGet()
+	api.IndividualsDeleteV1Handler = v1.IndividualsDelete()
 
 	api.PreServerShutdown = func() {}
-
 	api.ServerShutdown = func() {}
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))

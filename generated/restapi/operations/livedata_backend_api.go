@@ -45,6 +45,9 @@ func NewLivedataBackendAPI(spec *loads.Document) *LivedataBackendAPI {
 		IndividualsCreateNewV1Handler: IndividualsCreateNewV1HandlerFunc(func(params IndividualsCreateNewV1Params) middleware.Responder {
 			return middleware.NotImplemented("operation IndividualsCreateNewV1 has not yet been implemented")
 		}),
+		IndividualsDeleteV1Handler: IndividualsDeleteV1HandlerFunc(func(params IndividualsDeleteV1Params) middleware.Responder {
+			return middleware.NotImplemented("operation IndividualsDeleteV1 has not yet been implemented")
+		}),
 		IndividualsGetAllV1Handler: IndividualsGetAllV1HandlerFunc(func(params IndividualsGetAllV1Params) middleware.Responder {
 			return middleware.NotImplemented("operation IndividualsGetAllV1 has not yet been implemented")
 		}),
@@ -92,6 +95,8 @@ type LivedataBackendAPI struct {
 
 	// IndividualsCreateNewV1Handler sets the operation handler for the individuals create new v1 operation
 	IndividualsCreateNewV1Handler IndividualsCreateNewV1Handler
+	// IndividualsDeleteV1Handler sets the operation handler for the individuals delete v1 operation
+	IndividualsDeleteV1Handler IndividualsDeleteV1Handler
 	// IndividualsGetAllV1Handler sets the operation handler for the individuals get all v1 operation
 	IndividualsGetAllV1Handler IndividualsGetAllV1Handler
 	// IndividualsGetV1Handler sets the operation handler for the individuals get v1 operation
@@ -177,6 +182,9 @@ func (o *LivedataBackendAPI) Validate() error {
 
 	if o.IndividualsCreateNewV1Handler == nil {
 		unregistered = append(unregistered, "IndividualsCreateNewV1Handler")
+	}
+	if o.IndividualsDeleteV1Handler == nil {
+		unregistered = append(unregistered, "IndividualsDeleteV1Handler")
 	}
 	if o.IndividualsGetAllV1Handler == nil {
 		unregistered = append(unregistered, "IndividualsGetAllV1Handler")
@@ -279,6 +287,10 @@ func (o *LivedataBackendAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/v1/individuals"] = NewIndividualsCreateNewV1(o.context, o.IndividualsCreateNewV1Handler)
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/v1/individuals/{id}"] = NewIndividualsDeleteV1(o.context, o.IndividualsDeleteV1Handler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

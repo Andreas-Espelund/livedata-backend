@@ -54,6 +54,26 @@ paths:
           description: Not found
         '500':
           description: Internal server error
+    delete:
+      operationId: "IndividualsDeleteV1"
+      summary: "Delete individual"
+      description: "Delete an individual by id"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Individual'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
 
   /v1/individuals:
     get:
@@ -89,6 +109,8 @@ paths:
           schema:
             $ref: '#/definitions/Individual'
 
+
+
 definitions:
   Individual:
     type: object
@@ -100,8 +122,10 @@ definitions:
         format: date
       status:
         type: string
+        enum: ["ACTIVE", "INACTIVE"]
       gender:
         type: string
+        enum: ["MALE", "FEMALE"]
       mother:
         type: integer
       father:

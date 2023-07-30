@@ -105,6 +105,36 @@ func init() {
           }
         }
       },
+      "delete": {
+        "description": "Delete an individual by id",
+        "summary": "Delete individual",
+        "operationId": "IndividualsDeleteV1",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Individual"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "patch": {
         "description": "Updates the individual object with the provided data",
         "summary": "Update an individual by ID",
@@ -159,7 +189,11 @@ func init() {
           "type": "integer"
         },
         "gender": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "MALE",
+            "FEMALE"
+          ]
         },
         "id": {
           "type": "integer"
@@ -168,7 +202,11 @@ func init() {
           "type": "integer"
         },
         "status": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE"
+          ]
         }
       }
     },
@@ -279,6 +317,36 @@ func init() {
           }
         }
       },
+      "delete": {
+        "description": "Delete an individual by id",
+        "summary": "Delete individual",
+        "operationId": "IndividualsDeleteV1",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Individual"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
       "patch": {
         "description": "Updates the individual object with the provided data",
         "summary": "Update an individual by ID",
@@ -333,7 +401,11 @@ func init() {
           "type": "integer"
         },
         "gender": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "MALE",
+            "FEMALE"
+          ]
         },
         "id": {
           "type": "integer"
@@ -342,7 +414,11 @@ func init() {
           "type": "integer"
         },
         "status": {
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "INACTIVE"
+          ]
         }
       }
     },

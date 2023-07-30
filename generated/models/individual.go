@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -27,6 +28,7 @@ type Individual struct {
 	Father int64 `json:"father,omitempty"`
 
 	// gender
+	// Enum: [MALE FEMALE]
 	Gender string `json:"gender,omitempty"`
 
 	// id
@@ -36,6 +38,7 @@ type Individual struct {
 	Mother int64 `json:"mother,omitempty"`
 
 	// status
+	// Enum: [ACTIVE INACTIVE]
 	Status string `json:"status,omitempty"`
 }
 
@@ -44,6 +47,14 @@ func (m *Individual) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateBirthDate(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateGender(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateStatus(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -59,6 +70,90 @@ func (m *Individual) validateBirthDate(formats strfmt.Registry) error {
 	}
 
 	if err := validate.FormatOf("birth_date", "body", "date", m.BirthDate.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var individualTypeGenderPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["MALE","FEMALE"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		individualTypeGenderPropEnum = append(individualTypeGenderPropEnum, v)
+	}
+}
+
+const (
+
+	// IndividualGenderMALE captures enum value "MALE"
+	IndividualGenderMALE string = "MALE"
+
+	// IndividualGenderFEMALE captures enum value "FEMALE"
+	IndividualGenderFEMALE string = "FEMALE"
+)
+
+// prop value enum
+func (m *Individual) validateGenderEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, individualTypeGenderPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *Individual) validateGender(formats strfmt.Registry) error {
+	if swag.IsZero(m.Gender) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateGenderEnum("gender", "body", m.Gender); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var individualTypeStatusPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["ACTIVE","INACTIVE"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		individualTypeStatusPropEnum = append(individualTypeStatusPropEnum, v)
+	}
+}
+
+const (
+
+	// IndividualStatusACTIVE captures enum value "ACTIVE"
+	IndividualStatusACTIVE string = "ACTIVE"
+
+	// IndividualStatusINACTIVE captures enum value "INACTIVE"
+	IndividualStatusINACTIVE string = "INACTIVE"
+)
+
+// prop value enum
+func (m *Individual) validateStatusEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, individualTypeStatusPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *Individual) validateStatus(formats strfmt.Registry) error {
+	if swag.IsZero(m.Status) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateStatusEnum("status", "body", m.Status); err != nil {
 		return err
 	}
 
