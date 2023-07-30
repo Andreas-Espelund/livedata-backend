@@ -1,0 +1,53 @@
+name: Go
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  AZURE_WEBAPP_NAME: livedata-bakcend   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '.'     # set this to the path to your web app project, defaults to the repository root
+  GO_VERSION: '1.16'                 # set this to the Go version to use for building your application
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Get dependencies
+        run: go get -v -t ./...
+
+      - name: Build
+        run: go build -v ./
+
+#      - name: Test
+#        run: go test -v ./
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Deploy to Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'livedata-backend'
+          package: './'
+
+      - name: 'Logout of Azure CLI'
+        run: az logout
