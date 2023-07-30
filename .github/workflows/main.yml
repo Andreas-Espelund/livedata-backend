@@ -7,7 +7,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: livedata-bakcend   # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: '.'     # set this to the path to your web app project, defaults to the repository root
-  GO_VERSION: '1.16'                 # set this to the Go version to use for building your application
+  GO_VERSION: '1.20'                 # set this to the Go version to use for building your application
 
 jobs:
 
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.20
+          go-version: ^1.20
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
