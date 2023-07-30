@@ -5,3 +5,6 @@ server:
 .PHONY: generate
 swagger:
 	swagger generate server -A livedata-backend -f ./manifests/openApi/swagger.yaml -t ./generated && go mod tidy
+
+build:
+	go build -v ./generated/cmd/livedata-backend-server/main.go
