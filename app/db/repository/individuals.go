@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/Andreas-Espelund/livedata-backend/generated/models"
 	"github.com/go-openapi/strfmt"
-	"github.com/mitchellh/mapstructure"
 	"strconv"
 )
 
@@ -32,15 +31,6 @@ func individualToMap(individual models.Individual) (map[string]interface{}, erro
 	}
 
 	return testIndividual, nil
-}
-
-func mapToIndividual(in map[string]interface{}) (models.Individual, error) {
-	var result models.Individual
-
-	if err := mapstructure.Decode(in, &result); err != nil {
-		return result, fmt.Errorf("BAD REQUEST")
-	}
-	return result, nil
 }
 
 func GetIndividual(id int64) (models.Individual, error) {
@@ -84,13 +74,11 @@ func UpdateIndividual(id int64, patches models.Patch) (models.Individual, error)
 		}
 	}
 
-	result, err := mapToIndividual(mapIndividual)
-
 	if err != nil {
 		fmt.Print(err)
 	}
 
-	return result, nil
+	return individual, nil
 
 }
 
