@@ -13,4 +13,4 @@ RUN go build -ldflags '-s' -o api-server generated/cmd/livedata-backend-server/m
 
 EXPOSE 8080
 
-CMD ["/app/api-server", "--port=8080"]
+CMD ["/app/api-server", "--host=0.0.0.0", "--port=8080"]
