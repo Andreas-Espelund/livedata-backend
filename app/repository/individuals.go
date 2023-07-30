@@ -2,8 +2,11 @@ package repository
 
 import (
 	"fmt"
+	dbModels "github.com/Andreas-Espelund/livedata-backend/app/db/models"
 	"github.com/Andreas-Espelund/livedata-backend/generated/models"
 	"github.com/go-openapi/strfmt"
+	"github.com/jmoiron/sqlx"
+	"github.com/mitchellh/mapstructure"
 	"strconv"
 )
 
@@ -33,21 +36,48 @@ func individualToMap(individual models.Individual) (map[string]interface{}, erro
 	return testIndividual, nil
 }
 
-func GetIndividual(id int64) (models.Individual, error) {
+func mapToIndividual(in map[string]interface{}) (models.Individual, error) {
+	var result models.Individual
+
+	if err := mapstructure.Decode(in, &result); err != nil {
+		return result, fmt.Errorf("BAD REQUEST")
+	}
+	return result, nil
+}
+
+func GetIndividual(db *sqlx.DB, id int64) (models.Individual, error) {
 
 	return getMockIndividual(), nil
 }
 
-func GetAllIndividuals() ([]*models.Individual, error) {
-	a := getMockIndividual()
-	b := getMockIndividual()
+func GetAllIndividuals(db *sqlx.DB) ([]*models.Individual, error) {
 
-	res := []*models.Individual{&a, &b}
+	var individuals []*dbModels.Individual
+	query := "SELECT * FROM livedata.Individuals"
 
-	return res, nil
+	err := db.Get(individuals, query)
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	ind := individuals[0]
+
+	res := models.Individual{
+		ID:        ind.ID,
+		BirthDate: ind.BirthDate,
+		Father:    ind.Father,
+		Gender:    ind.Gender,
+		Mother:    ind.Mother,
+		Status:    ind.Status,
+	}
+
+	var results []*models.Individual
+
+	results = append(results, &res)
+	return results, nil
 }
 
-func UpdateIndividual(id int64, patches models.Patch) (models.Individual, error) {
+func UpdateIndividual(db *sqlx.DB, id int64, patches models.Patch) (models.Individual, error) {
 	individual := getMockIndividual()
 
 	mapIndividual, err := individualToMap(individual)
@@ -82,10 +112,10 @@ func UpdateIndividual(id int64, patches models.Patch) (models.Individual, error)
 
 }
 
-func DeleteIndividual(id int64) (models.Individual, error) {
+func DeleteIndividual(db *sqlx.DB, id int64) (models.Individual, error) {
 	return getMockIndividual(), nil
 }
 
-func CreateIndividual() (models.Individual, error) {
+func CreateIndividual(db *sqlx.DB) (models.Individual, error) {
 	return getMockIndividual(), nil
 }

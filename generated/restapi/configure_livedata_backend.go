@@ -4,6 +4,7 @@ package restapi
 
 import (
 	"crypto/tls"
+	"github.com/Andreas-Espelund/livedata-backend/app"
 	"github.com/Andreas-Espelund/livedata-backend/app/handlers/v1"
 	"net/http"
 
@@ -38,14 +39,16 @@ func configureAPI(api *operations.LivedataBackendAPI) http.Handler {
 
 	// v1 handlers
 
+	ap := app.New()
+
 	// PATH: /individuals
-	api.IndividualsGetAllV1Handler = v1.IndividualsGetAll()
-	api.IndividualsCreateNewV1Handler = v1.IndividualsCreateNew()
+	api.IndividualsGetAllV1Handler = v1.IndividualsGetAll(ap)
+	api.IndividualsCreateNewV1Handler = v1.IndividualsCreateNew(ap)
 
 	// PATH: /individuals/{id}
-	api.IndividualsPatchV1Handler = v1.IndividualsPatch()
-	api.IndividualsGetV1Handler = v1.IndividualsGet()
-	api.IndividualsDeleteV1Handler = v1.IndividualsDelete()
+	api.IndividualsPatchV1Handler = v1.IndividualsPatch(ap)
+	api.IndividualsGetV1Handler = v1.IndividualsGet(ap)
+	api.IndividualsDeleteV1Handler = v1.IndividualsDelete(ap)
 
 	api.PreServerShutdown = func() {}
 	api.ServerShutdown = func() {}

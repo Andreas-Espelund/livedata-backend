@@ -2,15 +2,16 @@ package v1
 
 import (
 	"fmt"
-	"github.com/Andreas-Espelund/livedata-backend/app/db/repository"
+	"github.com/Andreas-Espelund/livedata-backend/app"
+	"github.com/Andreas-Espelund/livedata-backend/app/repository"
 	"github.com/Andreas-Espelund/livedata-backend/generated/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
 )
 
-func IndividualsGet() operations.IndividualsGetV1HandlerFunc {
+func IndividualsGet(api app.Api) operations.IndividualsGetV1HandlerFunc {
 	return func(params operations.IndividualsGetV1Params) middleware.Responder {
 
-		testIndividual, err := repository.GetIndividual(params.ID)
+		testIndividual, err := repository.GetIndividual(api.Db, params.ID)
 
 		if err != nil {
 			fmt.Print(err)
@@ -20,10 +21,10 @@ func IndividualsGet() operations.IndividualsGetV1HandlerFunc {
 	}
 }
 
-func IndividualsGetAll() operations.IndividualsGetAllV1HandlerFunc {
+func IndividualsGetAll(api app.Api) operations.IndividualsGetAllV1HandlerFunc {
 	return func(params operations.IndividualsGetAllV1Params) middleware.Responder {
 
-		testers, err := repository.GetAllIndividuals()
+		testers, err := repository.GetAllIndividuals(api.Db)
 
 		if err != nil {
 			fmt.Print(err)
@@ -34,10 +35,10 @@ func IndividualsGetAll() operations.IndividualsGetAllV1HandlerFunc {
 	}
 }
 
-func IndividualsCreateNew() operations.IndividualsCreateNewV1HandlerFunc {
+func IndividualsCreateNew(api app.Api) operations.IndividualsCreateNewV1HandlerFunc {
 	return func(params operations.IndividualsCreateNewV1Params) middleware.Responder {
 
-		testIndividual, err := repository.CreateIndividual()
+		testIndividual, err := repository.CreateIndividual(api.Db)
 
 		if err != nil {
 			fmt.Print(err)
@@ -48,9 +49,9 @@ func IndividualsCreateNew() operations.IndividualsCreateNewV1HandlerFunc {
 	}
 }
 
-func IndividualsPatch() operations.IndividualsPatchV1HandlerFunc {
+func IndividualsPatch(api app.Api) operations.IndividualsPatchV1HandlerFunc {
 	return func(params operations.IndividualsPatchV1Params) middleware.Responder {
-		testIndividual, err := repository.UpdateIndividual(params.ID, params.Patch)
+		testIndividual, err := repository.UpdateIndividual(api.Db, params.ID, params.Patch)
 
 		if err != nil {
 			fmt.Print(err)
@@ -61,10 +62,10 @@ func IndividualsPatch() operations.IndividualsPatchV1HandlerFunc {
 	}
 }
 
-func IndividualsDelete() operations.IndividualsDeleteV1HandlerFunc {
+func IndividualsDelete(api app.Api) operations.IndividualsDeleteV1HandlerFunc {
 	return func(params operations.IndividualsDeleteV1Params) middleware.Responder {
 
-		testIndividual, err := repository.DeleteIndividual(params.ID)
+		testIndividual, err := repository.DeleteIndividual(api.Db, params.ID)
 
 		if err != nil {
 			fmt.Print(err)
