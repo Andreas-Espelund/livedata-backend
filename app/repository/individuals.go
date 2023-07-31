@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"fmt"
 	dbModels "github.com/Andreas-Espelund/livedata-backend/app/db/models"
 	"github.com/Andreas-Espelund/livedata-backend/generated/models"
@@ -21,6 +22,17 @@ func getMockIndividual() models.Individual {
 	}
 
 	return testIndividual
+}
+
+func individualDbToApi(individual dbModels.Individual) models.Individual {
+	return models.Individual{
+		BirthDate: individual.BirthDate,
+		Father:    individual.ID,
+		Gender:    individual.Gender,
+		ID:        individual.ID,
+		Mother:    individual.Mother,
+		Status:    individual.Status,
+	}
 }
 
 func individualToMap(individual models.Individual) (map[string]interface{}, error) {
@@ -47,7 +59,17 @@ func mapToIndividual(in map[string]interface{}) (models.Individual, error) {
 
 func GetIndividual(db *sqlx.DB, id int64) (models.Individual, error) {
 
-	return getMockIndividual(), nil
+	query := "SELECT * FROM livedata.Individuals WHERE ID = @ID"
+	var individual dbModels.Individual
+	err := db.Select(individual, query, sql.Named("ID", id))
+
+	res := individualDbToApi(individual)
+	if err != nil {
+		fmt.Print(err)
+		return res, err
+	}
+
+	return res, nil
 }
 
 func GetAllIndividuals(db *sqlx.DB) ([]*models.Individual, error) {
