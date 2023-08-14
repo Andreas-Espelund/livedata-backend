@@ -16,11 +16,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Log in to Azure using Service Principal
+      - name: Log in to Azure using Managed Identity
         run: |
-          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant f4a93165-2815-41e6-bde0-18ee836f64b9
+          az login --identity --username ${{ secrets.AZURE_CLIENT_ID }} --tenant ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Build and push
         run: |
-          docker build -t espelund.azurecr.io/livedata-backend-server:latest .
-          docker push espelund.azurecr.io/livedata-backend-server:latest
+          docker build -t youracr.azurecr.io/livedata-backend-server:latest .
+          docker push youracr.azurecr.io/livedata-backend-server:latest
