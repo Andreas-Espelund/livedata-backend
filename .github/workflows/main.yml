@@ -16,6 +16,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
+      - name: Log in to Azure using Managed Identity
+        run: |
+          az login --identity --username ${{ secrets.AZURE_MANAGED_IDENTITY_CLIENT_ID }}
+
       - name: Build and push
         run: |
           docker build -t espelund.azurecr.io/livedata-backend-server:latest .
