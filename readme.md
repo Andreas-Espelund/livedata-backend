@@ -75,6 +75,14 @@ To contribute to Livedata Backend, follow these steps:
 
 If you want to contact me, you can reach me at `<your_email>`.
 
+
+## Azure overview
+- AKS
+- Container registry
+- Azure sql database
+- 
+
+
 ## License
 
 This project uses the following license: `<license>`.
